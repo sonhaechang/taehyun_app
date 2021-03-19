@@ -52,6 +52,7 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles', 
     'django.contrib.humanize',
+    'django.contrib.sites',
 ]
 
 PROJECT_APPS = [
@@ -160,6 +161,8 @@ SESSION_COOKIE_AGE = 1800
 SESSION_SAVE_EVERY_REQUEST = True
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+SITE_ID = 1
 
 from django.contrib.messages import constants as messages_constants
 
