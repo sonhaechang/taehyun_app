@@ -145,6 +145,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # 인증 모델 지정
@@ -157,6 +158,8 @@ DRIVER_PATH = os.path.join(BASE_DIR, "static/files/chromedriver")
 
 SESSION_COOKIE_AGE = 1800
 SESSION_SAVE_EVERY_REQUEST = True
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 from django.contrib.messages import constants as messages_constants
 

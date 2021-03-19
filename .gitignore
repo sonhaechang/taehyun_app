@@ -3,3 +3,4 @@ secrets.json
 Untitled.ipynb
 Untitled-checkpoint.ipynb
 __pycache__
+.DS_Store

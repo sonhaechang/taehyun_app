@@ -18,9 +18,7 @@ from accounts.models import (
 User = get_user_model()
 
 def get_and_create_tags():
-	# file_path = "/Users/sonhaechang/Django_Web_Programming/taehyun_app/instagram_tag_account.xlsx"
-	file_path = settings.XLSX_FILE_PATH
-	wb = openpyxl.load_workbook(file_path)
+	wb = openpyxl.load_workbook(settings.XLSX_FILE_PATH)
 	sheet = wb['Sheet1']
 	rows, cols = sheet.max_row, sheet.max_column 
 
@@ -35,9 +33,7 @@ def get_and_create_tags():
 
 
 def get_and_create_accounts():
-	# file_path = "/Users/sonhaechang/Django_Web_Programming/taehyun_app/instagram_tag_account.xlsx"
-	file_path = settings.XLSX_FILE_PATH
-	wb = openpyxl.load_workbook(file_path)
+	wb = openpyxl.load_workbook(settings.XLSX_FILE_PATH)
 	sheet = wb['Sheet2']
 	rows, cols = sheet.max_row, sheet.max_column 
 
@@ -52,9 +48,7 @@ def get_and_create_accounts():
 
 @transaction.atomic
 def save_tag_result():
-	# file_path = "/Users/sonhaechang/Django_Web_Programming/taehyun_app/instagram_tag_account.xlsx"
-	file_path = settings.XLSX_FILE_PATH
-	wb = openpyxl.load_workbook(file_path)
+	wb = openpyxl.load_workbook(settings.XLSX_FILE_PATH)
 	sheet = wb['Sheet1']
 
 	date_list = [
@@ -108,9 +102,7 @@ def save_tag_result():
 
 @transaction.atomic
 def save_account_result():
-	# file_path = "/Users/sonhaechang/Django_Web_Programming/taehyun_app/instagram_tag_account.xlsx"
-	file_path = settings.XLSX_FILE_PATH
-	wb = openpyxl.load_workbook(file_path)
+	wb = openpyxl.load_workbook(settings.XLSX_FILE_PATH)
 	sheet = wb['Sheet2']
 
 	date_list = [
