@@ -40,7 +40,6 @@ def tag_crawling(request):
 		chrome_options.add_argument("--headless")
 		chrome_options.add_argument("--disable-gpu")
 		driver = webdriver.Chrome(settings.DRIVER_PATH, options=chrome_options)
-		# driver = webdriver.Chrome(settings.DRIVER_PATH)
 		driver.implicitly_wait(3) 
 		driver.get(url)
 
@@ -139,7 +138,10 @@ def account_crawling(request):
 		# DRIVER_DIR = "/Users/sonhaechang/Django_Web_Programming/taehyun_app/chromedriver"
 
 		# selenium으로 크롬창 띄우기
-		driver = webdriver.Chrome(settings.DRIVER_PATH)
+		chrome_options = webdriver.ChromeOptions()
+		chrome_options.add_argument("--headless")
+		chrome_options.add_argument("--disable-gpu")
+		driver = webdriver.Chrome(settings.DRIVER_PATH, options=chrome_options)
 		driver.implicitly_wait(3) 
 		driver.get(url)
 
