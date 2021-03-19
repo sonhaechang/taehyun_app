@@ -1,0 +1,63 @@
+{% extends "accounts/layout.html" %}
+{% load static %}
+
+{% block css_extra %}
+{% endblock %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row position-relative">
+
+			<div style="opacity: 0.9; z-index: 100;"
+				class="loading-add-block w-100 h-100 bg-light position-absolute top-0 start-0 text-center d-none">
+				<div style="transform: translate(-50%, -50%);" 
+					class="loading-add-block-inner m-0 position-absolute top-50 start-50">
+					<h3>추가중입니다. 잠시만 기다려주세요.</h3>
+					<p>크롤링한 횟수가 많을수록 시간이 오래걸릴 수 있습니다.</p>
+					<img src="{% static 'img/progressbar.gif' %}" alt="progressbar" class="mt-3">
+				</div>
+			</div>
+			
+			<div style="opacity: 0.9; z-index: 100;"
+				class="loading-crawling-block w-100 h-100 bg-light position-absolute top-0 start-0 text-center d-none">
+				<div style="transform: translate(-50%, -50%);" 
+					class="loading-crawlin-block-inner m-0 position-absolute top-50 start-50">
+					<h3>크롤링중입니다. 잠시만 기다려주세요.</h3>
+					<p>크롤링할 갯수가 많을수록 시간이 오래걸릴 수 있습니다.</p>
+					<img src="{% static 'img/progressbar.gif' %}" alt="progressbar" class="mt-3">
+				</div>
+			</div>
+
+			<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse border-end">
+				<div class="position-sticky pt-3 mt-5">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" 
+								href="{% url 'dashboard' %}">
+								<span data-feather="home"></span>
+								Dashboard
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'account_follower_result' %}">
+								<span data-feather="file"></span>
+								계정별 팔로워 결과
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'tag_result' %}">
+								<span data-feather="shopping-cart"></span>
+								태그 결과
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-5">
+				{% block dashboard_content %}
+				{% endblock %}
+			</main>
+		</div>
+	</div>
+{% endblock %}

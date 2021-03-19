@@ -1,0 +1,17 @@
+<div class="modal fade" id="accountList" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="accountListLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="accountListLabel">검색할 계정 리스트</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+					v-on:click="closeModal"></button>
+			</div>
+			<div class="modal-header">
+				{% include "accounts/modal/_create_name_form.html" with type="account" %}
+			</div>
+			<div class="modal-body">
+				{% include "accounts/_search_list_table.html" with object_list=account_list type="post" %}
+			</div>
+		</div>
+	</div>
+</div>

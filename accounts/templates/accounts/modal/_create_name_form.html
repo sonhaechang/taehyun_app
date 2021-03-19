@@ -1,0 +1,25 @@
+<form action="." class="w-100">
+	{% csrf_token %}
+	<div class="d-flex">
+		<div class="col-9">
+			<input 
+				type="text" name="name" maxlength="100" 
+				required="required" class="form-control" id="id_name"
+				v-model="create_name">
+		</div>
+		<div class="col-3 d-grid">
+			{% if type == 'tag' %}
+				<button type="submit" class="btn btn-block btn-primary"
+					v-on:click="createName($event, 'tag')">
+					추가하기
+				</button>
+			{% else %}
+				<button type="submit" class="btn btn-block btn-primary"
+					v-on:click="createName($event, 'account')">
+					추가하기
+				</button>
+			{% endif %}
+		</div>
+		<div class="invalid-feedback" style="display:block;"></div>
+	</div>
+</form>

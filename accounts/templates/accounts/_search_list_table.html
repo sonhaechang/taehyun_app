@@ -1,0 +1,40 @@
+{% if object_list %}
+	<table class="table table-hover">
+		<thead>
+			{% if type == "tag" %}
+				<tr>
+					<th>태그명</th>
+					<th>삭제</th>
+				</tr>
+			{% else %}
+				<tr>
+					<th>포스팅</th>
+					<th>삭제</th>
+				</tr>
+			{% endif %}
+		</thead>
+		<tbody>
+			{% if type == "tag" %}
+				<tr v-if="tag_list"
+					v-for="(tag, index) in tag_list" 
+					v-bind:key="tag.id"
+					v-bind:id="[[ tag.id ]]">
+					<td>[[ tag.name ]]</td>
+					<td>
+						<a href="#" v-on:click="deleteName($event, 'tag', [[ tag.id ]], index)">삭제</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr v-if="account_list"
+					v-for="(account, index) in account_list" 
+					v-bind:key="account.id"
+					v-bind:id="[[ account.id ]]">
+					<td>[[ account.name ]]</td>
+					<td>
+						<a href="#" v-on:click="deleteName($event, 'account', [[ account.id ]], index)">삭제</a>
+					</td>
+				</tr>
+			{% endif %}
+		</tbody>
+	</table>
+{% endif %}

@@ -1,0 +1,277 @@
+{% extends "accounts/dashboard_layout.html" %}
+{% load static %}
+
+{% block dashboard_content %}
+	<div id="app">
+		<div class="row mb-5">
+			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-5 border-bottom">
+				<h1 class="h2">Dashboard</h1>
+			</div>
+
+			<div class="col-sm-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">계정 정보</h5>
+						<p class="card-text">
+							<span class="d-block">ID: <strong>{{ user.username }}</strong></span>
+							<span style="opacity: 0;">block</span>
+						</p>
+						<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePassword">
+							비밀번호 변경
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">인스타그램 계정 정보</h5>
+						<p class="card-text">
+							<span class="d-block">ID: <strong>{{ user.instagram_id }}</strong></span>
+							<span>
+								PASSWORD: 
+								<strong class="instagram-password">{{ user.instagram_pw }}</strong>
+							</span>
+						</p>
+						<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeInstaAccounts">
+							인스타그램 계정 수정
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">검색할 계정 리스트</h5>
+						<p class="card-text">검색할 계정 리스트 확인 및 등록하기</p>
+						<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#accountList">
+							계정 리스트 보기
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">검색할 태그 리스트</h5>
+						<p class="card-text">검색할 태그 리스트 확인 및 등록하기</p>
+						<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tagList">
+							태그 리스트 보기
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">계정별 팔로워 결과</h5>
+						<p class="card-text">크롤링한 계정별 팔로워 결과 확인하기</p>
+						<a href="{% url 'account_follower_result' %}" class="btn btn-primary">계정별 팔로워 결과 보기</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">태그 결과</h5>
+						<p class="card-text">크롤링한 태그 결과 확인하기</p>
+						<a href="{% url 'tag_result' %}" class="btn btn-primary">태그 결과 보기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% include "accounts/modal/_change_password_modal.html" %}
+		{% include "accounts/modal/_edit_insta_accounts_modal.html" %}
+		{% include "accounts/modal/_account_list_modal.html" %}
+		{% include "accounts/modal/_tag_list_modal.html" %}
+	</div>
+{% endblock %}
+
+{% block script_extra %}
+	<script>
+		const app = new Vue({
+			el: '#main',
+			delimiters: ['[[', ']]'],
+			data: {
+				account_list: [],
+				tag_list: [],
+				change_password: {
+					old_password: '',
+					new_password1: '',
+					new_password2: '',
+				},
+				instagram_accounts: {
+					instagram_id: '{{ user.instagram_id }}',
+					instagram_pw: '{{ user.instagram_pw }}',
+				}, 
+				create_name: ''
+			},
+			created() {
+				let that = this;
+				const insta_passwd_ele = document.querySelector('.instagram-password');
+				const insta_passwd = insta_passwd_ele.innerHTML.replace(/(?<=.{0})./gi, "*");
+				insta_passwd_ele.innerHTML = insta_passwd;
+
+				axios.get("{% url 'tag_list' %}").then(function (data) {
+					that.tag_list = data.data;
+				}).catch(function (err) {
+					console.error(err);
+				})
+
+				axios.get("{% url 'account_list' %}").then(function (data) {
+					that.account_list = data.data;
+				}).catch(function (err) {
+					console.error(err);
+				})
+			},
+			methods: {
+				closeModal(e) {
+					let that = this;
+
+					that.change_password.old_password = '';
+					that.change_password.new_password1 = '';
+					that.change_password.new_password2 = '';
+					that.instagram_accounts.instagram_id = '{{ user.instagram_id }}',
+					that.instagram_accounts.instagram_pw = '{{ user.instagram_pw }}',
+					that.create_name = '';
+
+					that.removeErrorText();
+				},
+				removeErrorText() {
+					const feedback = document.querySelectorAll('.invalid-feedback');
+					for ( i=0; i<feedback.length; i++  ) {
+						const error = feedback[i].children[0];
+						if (error) { error.remove(); }
+					}
+				},
+				errorMessage(data) {
+					for (var name in data.data.errors) {
+						for (var i in data.data.errors[name]) {
+							if(document.querySelector("input[name$='"+ name +"']")) {
+								var $input = document.querySelector("input[name$='"+ name +"']");
+								const ul = document.createElement('ul');
+								const li = document.createElement('li');
+								li.innerHTML = data.data.errors[name][i].message;
+								ul.appendChild(li);
+								$input.parentNode.childNodes[2].appendChild(ul);
+							}
+						}
+					}
+				},
+				changePassword() {
+					document.querySelector('.real-change-password-btn').click();
+				},
+				realChangePassword(e) {
+					e.preventDefault();
+
+					let that = this,
+						data = new FormData();
+
+					data.append("old_password", this.change_password.old_password);
+					data.append("new_password1", this.change_password.new_password1);
+					data.append("new_password2", this.change_password.new_password2);
+					data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+					
+					axios.post(
+						"{% url 'change_password' %}", data
+					).then(function (data) {
+						if ( data.data.errors ) {
+							that.removeErrorText();
+							that.errorMessage(data);
+						} else {
+							window.location.href = data.data.redirect_url;
+						}
+					}).catch(function (err) {
+						console.error(err);
+                    })
+				},
+				editInstaAccountsInfo(e) {
+					document.querySelector('.real-edit-insta-accounts-info-btn').click();
+				},
+				realEditInstaAccountsInfo(e) {
+					e.preventDefault();
+
+					let that = this,
+						data = new FormData();
+
+					data.append("instagram_id", this.instagram_accounts.instagram_id);
+					data.append("instagram_pw", this.instagram_accounts.instagram_pw);
+					data.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+					
+					axios.post(
+						"{% url 'edit_insta_accounts_info' %}", data
+					).then(function (data) {
+						if ( data.data.errors ) {
+							that.removeErrorText();
+							that.errorMessage(data);
+						} else {
+							window.location.href = data.data.redirect_url;
+						}
+					}).catch(function (err) {
+						console.error(err);
+                    })
+				},
+				createName(e, type) {
+					e.preventDefault();
+
+					axios.defaults.xsrfCookieName = 'csrftoken';
+                    axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+					let that = this,
+						url;
+					
+					if (type == "tag") {
+						url = "{% url 'tag_list' %}";
+					} else {
+						url = "{% url 'account_list' %}";
+					}
+
+					axios.post(url, {
+						name: that.create_name
+					}).then(function (data) {
+						if (type == "tag") {
+							that.tag_list.push(data.data);
+						} else {
+							that.account_list.push(data.data);
+						}
+						alert('추가되었습니다.');
+						this.create_name = '';
+					}).catch(function (err) {
+						console.error(err);
+                    })
+				},
+				deleteName(e, type, id, index) {
+					e.preventDefault();
+
+					axios.defaults.xsrfCookieName = 'csrftoken';
+                    axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+					let that = this,
+						url;
+					
+					if (type == "tag") {
+						url = `/accounts/tag/delete/${id[0][0]}/`;
+					} else {
+						url = `/accounts/account/delete/${id[0][0]}/`;
+					}
+
+					if (!confirm('정말 삭제 하시겠습니까?')) {
+                        return
+                    }
+
+					axios.delete(url).then(function (data) {
+						if (type == "tag") {
+							that.tag_list.splice(index, 1);
+						} else {
+							that.account_list.splice(index, 1);
+						}
+						alert('삭제하였습니다.');
+						this.create_name = '';
+					}).catch(function (err) {
+						console.error(err);
+                    })
+				}
+			},
+		})
+	</script>
+{% endblock %}

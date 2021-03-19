@@ -1,0 +1,51 @@
+<div class="modal fade" id="changeInstaAccounts" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changeInstaAccountsLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="changeInstaAccountsLabel">인스타그램 계정 정보 수정</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+					v-on:click="closeModal"></button>
+			</div>
+			<div class="modal-body">
+				<form action=".">
+					{% csrf_token %}
+					<div class="mb-3">
+						<input type="text" name="instagram_id" maxlength="60" 
+							required="required" id="id_instagram_id" class="form-control"
+							value="{{ user.instagram_id }}"
+							v-model="instagram_accounts.instagram_id">
+						<div class="invalid-feedback" style="display:block;"></div>
+						{% if edit_insta_accounts_info_form.instagram_id.help_text %}
+							<small class="text-muted">
+								{{ edit_insta_accounts_info_form.instagram_id.help_text }}
+							</small>
+						{% endif %}
+					</div>
+					<div class="mb-3">
+						<input type="password" name="instagram_pw" 
+							required="required" id="id_instagram_pw" class="form-control"
+							value="{{ user.instagram_pw }}"
+							v-model="instagram_accounts.instagram_pw">
+						<div class="invalid-feedback" style="display:block;"></div>
+						{% if edit_insta_accounts_info_form.instagram_pw.help_text %}
+							<small class="text-muted">
+								{{ edit_insta_accounts_info_form.instagram_pw.help_text }}
+							</small>
+						{% endif %}
+					</div>
+					<button type="submit"
+						class="d-none real-edit-insta-accounts-info-btn"
+						v-on:click="realEditInstaAccountsInfo">
+						비밀번호 변경
+					</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+					v-on:click="editInstaAccountsInfo">
+					정보 수정하기
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

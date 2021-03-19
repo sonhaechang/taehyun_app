@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="ko">
+	<header>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="{% static 'css/bootstrap5/bootstrap.min.css' %}" />
+		<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.14.0/css/all.css">
+		<script type="text/javascript" src="{% static 'js/bootstrap5/bootstrap.bundle.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/vue2.6.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/axios0.21.js' %}"></script>
+		<style>
+			.btn:focus,.btn:active {
+				outline: none !important;
+				box-shadow: none;
+			}
+			.form-control:focus, .form-control:active {
+				outline: none !important;
+				box-shadow: none;
+			}
+		</style>
+		{% block css_extra %}{% endblock %}
+	</header>
+	<body>
+		<div id="main">
+			{% include "navbar.html" %}
+
+			{% include "massage.html" %}
+
+			{% block content %}
+			{% endblock %}
+			
+			{% include "footer.html" %}
+		</div>
+
+		{% block script_extra %}{% endblock %}
+	</body>
+</html>

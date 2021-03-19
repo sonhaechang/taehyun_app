@@ -1,0 +1,36 @@
+.signup-body {
+	display: flex;
+	align-items: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: #f5f5f5;
+}
+
+.form-signup {
+	width: 100%;
+	max-width: 400px;
+	padding: 15px;
+	margin: auto;
+}
+
+.form-signup .checkbox {
+	font-weight: 400;
+}
+
+.form-signup .form-control {
+	position: relative;
+	box-sizing: border-box;
+	height: auto;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.form-signup ul{
+	list-style:none;
+	padding-left:0px;
+}
+ 
+
+.form-signup .form-control:focus {
+	z-index: 2;
+}

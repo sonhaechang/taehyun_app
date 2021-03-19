@@ -1,0 +1,77 @@
+{% extends "accounts/dashboard_layout.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block dashboard_content %}
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2">크롤링한 계정별 팔로워 결과</h1>
+		<a href="{% url 'crawling_account_list' %}" 
+			class="btn btn-primary" v-on:click="start_crawling">
+			크롤링 하기
+		</a>
+	</div>
+
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th nowrap 
+						style="background-color: #f2f2f2;"
+						class="pt-3 pb-3">
+					</th>
+					{% for account in account_list %}
+						<th nowrap colspan="2"
+							style="background-color: #f2f2f2;"
+							class="text-center pt-3 pb-3">
+							{{ account.name }}
+						</th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for date in crawling_date %}
+				<tr>
+					<th	nowrap 
+						style="padding-right: 4rem; position: sticky; left: 0; background-color: #f2f2f2;">
+						{{ date.created_at|date:'Y-m-d' }}
+					</th>
+					{% for result in date.searchaccountresult_set.all %}
+						<td nowrap style="padding: 0 2rem;"
+							class="text-center">
+							{{ result.count|intcomma }}
+						</td>
+						<td class="{% if result.compare < 0 %}text-primary{% elif result.compare > 0  %}text-danger{% endif %} text-center"
+							nowrap style="padding: 0 2rem;">
+							{{ result.compare }}
+						</td>
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	{% include "pagination.html" with obj_list=crawling_date %}
+{% endblock %}
+
+{% block script_extra %}
+	<script>
+		const app = new Vue({
+			el: '#main',
+			delimiters: ['[[', ']]'],
+			methods: {
+				start_crawling(e) {
+					e.preventDefault();
+
+					const url = e.target.href;
+					document.querySelector(".loading-crawling-block").classList.remove("d-none");
+					axios.get(url).then(function (data) {
+						window.location.href = "{% url 'account_follower_result' %}";
+					}).catch(function (err) {
+						console.error(err);
+					})
+				},
+			},
+		})
+	</script>
+{% endblock %}
