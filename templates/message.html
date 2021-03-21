@@ -1,7 +1,8 @@
 {% if messages %}
 	<div class="container position-relative top-0">
 		<div class="row">
-			<div class="col-12 position-absolute" style="z-index: 100;">
+			<div class="col-sm-8 offset-sm-2 col-xs-12 position-absolute" 
+				style="z-index: 100;">
 				{% for message in messages %}
 					{% if message.tags %}
 						<div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3 text-center" 
